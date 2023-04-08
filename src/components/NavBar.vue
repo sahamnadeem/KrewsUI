@@ -1,13 +1,13 @@
 <template>
-  <v-app-bar class="px-3" color="white" flat density="compact">
-    <v-avatar color="grey-darken-1" size="32"></v-avatar>
+  <v-app-bar class="px-3" color="white" flat density="comfortable">
 
     <v-spacer></v-spacer>
 
     <v-tabs centered color="grey-darken-2">
-      <v-tab v-for="link in links" :key="link">
-        {{ link }}
+      <v-tab v-for="link in links" :key="link"  :to="link.link"> 
+        {{ link.name }}
       </v-tab>
+      
     </v-tabs>
     <v-spacer></v-spacer>
 
@@ -21,6 +21,7 @@
 
 <script>
 export default {
+    name: "NavBarComp",
     props:{
         links:Array,
     }

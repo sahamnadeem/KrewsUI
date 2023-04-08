@@ -1,20 +1,35 @@
 <template>
   <v-app id="inspire">
+    <nav-bar :links="links"></nav-bar>
     <router-view />
   </v-app>
 </template>
-
+  
 <script>
+import NavBar from "@/components/NavBar.vue";
+
 export default {
+  components:{
+    NavBar
+  },
   data() {
     return {
-      
+      links: [
+        {
+          name: "Dashboard",
+          link: "/",
+        },
+        {
+          name: "Profile",
+          link: "/profile",
+        },
+      ],
     };
   },
 };
 </script>
-
-<style lang="scss">
+  
+  <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -36,3 +51,4 @@ nav {
   }
 }
 </style>
+  

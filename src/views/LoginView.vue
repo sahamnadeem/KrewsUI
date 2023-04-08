@@ -109,12 +109,11 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          // Handle successful login response
-          console.log("Login successful:", response);
           // Save token and user object to local storage
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
           // Redirect to dashboard or perform other actions as needed
+          this.$router.push("/");
         })
         .catch((error) => {
           // Display error message to user
@@ -127,7 +126,6 @@ export default {
         .finally(() => {
           // Reset loading state
           this.loading = false;
-          this.$router.push("/");
         });
     },
     signup(){

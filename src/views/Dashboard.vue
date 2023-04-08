@@ -8,7 +8,6 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 
-
 export default {
   components: {
     NavBar,
@@ -27,8 +26,29 @@ export default {
       ],
     };
   },
+  methods: {
+    onScroll() {
+      const that = this;
+      window.onscroll = function (ev) {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight && that.loading === false) {
+          that.loadMorePosts();
+        }
+      };
+    },
+    loadMorePosts() {
+      this.$store.dispatch("getMorePosts");
+    },
+  },
+  computed: {
+    loading(){
+      return this.$store.getters.getLoadingState
+    }
+  },
   beforeCreate() {
-    this.$store.dispatch('getPosts')
+    this.$store.dispatch("getPosts");
+  },
+  mounted() {
+    this.onScroll();
   },
 };
 </script>

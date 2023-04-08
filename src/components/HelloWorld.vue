@@ -7,6 +7,14 @@
         <v-col cols="12" sm="7">
           <create-post />
           <post v-for="post in posts" :key="post.id" v-bind="post.id" :content="post"></post>
+          <div class="d-flex justify-center">
+            <v-progress-circular
+              v-if="loading"
+              indeterminate
+              size="24"
+              color="#00b0be"
+            ></v-progress-circular>
+          </div>
         </v-col>
 
         <v-col cols="12" sm="2"> </v-col>
@@ -36,6 +44,9 @@ export default {
   computed:{
     posts(){
       return this.$store.getters.getPosts
+    },
+    loading(){
+      return this.$store.getters.getLoadingState
     }
   }
 };

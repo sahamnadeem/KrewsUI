@@ -151,7 +151,8 @@ export default {
           // Save token and user object to local storage
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
-          // Redirect to dashboard or perform other actions as needed
+          // Redirect to dashboard
+          this.$router.push("/");
         })
         .catch((error) => {
           // Display error message to user
@@ -166,7 +167,6 @@ export default {
         .finally(() => {
           // Reset loading state
           this.loading = false;
-          this.$router.push("/");
         });
     },
   },

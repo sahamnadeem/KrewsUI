@@ -8,9 +8,10 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 
+
 export default {
-  components:{
-    NavBar
+  components: {
+    NavBar,
   },
   data() {
     return {
@@ -26,18 +27,13 @@ export default {
       ],
     };
   },
+  beforeCreate() {
+    this.$store.dispatch('getPosts')
+  },
 };
 </script>
   
-  <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
+<style lang="scss">
 nav {
   padding: 30px;
 

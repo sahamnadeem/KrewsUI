@@ -8,9 +8,19 @@
             class="login-logo"
             alt="Twitter Logo"
           ></v-img>
-          <v-card-title class="login-card-title text-center"> Login </v-card-title>
+          <v-card-title class="login-card-title text-center">
+            Sign Up
+          </v-card-title>
           <v-card-text class="login-card-text">
             <v-form ref="loginForm" @submit.prevent="login" v-model="valid">
+              <v-text-field
+                v-model="name"
+                label="Name"
+                :rules="nameRules"
+                color="#00b0be"
+                dense
+                class="login-form-field mb-1"
+              ></v-text-field>
               <v-text-field
                 v-model="email"
                 label="Email"
@@ -25,6 +35,17 @@
                 v-model="password"
                 label="Password"
                 :rules="passwordRules"
+                required
+                type="password"
+                outlined
+                color="#00b0be"
+                dense
+                class="login-form-field mb-1"
+              ></v-text-field>
+              <v-text-field
+                v-model="confirmPassword"
+                label="Password Confirmation"
+                :rules="confirmPasswordRules"
                 required
                 type="password"
                 outlined
@@ -48,11 +69,13 @@
                     color="white"
                   ></v-progress-circular>
                 </template>
-                <template v-else> Login </template>
+                <template v-else> Register </template>
               </v-btn>
             </v-form>
-            <br/>
-            <div class="text-center">Don't have an account? Don't worry <router-link to="/signup">Signup</router-link> here</div>
+            <br />
+            <div class="text-center">Already have an account?
+              <router-link to="/login">Login</router-link> here</div
+            >
           </v-card-text>
         </v-card>
         <v-snackbar
@@ -62,7 +85,7 @@
           location="top right"
         >
           <div class="text-subtitle-1 pb-2">
-            <b>Error Occured During Login</b>
+            <b>Error</b>
           </div>
           <p>{{ error }}</p>
         </v-snackbar>
@@ -70,8 +93,8 @@
     </v-row>
   </v-container>
 </template>
-  
-<script>
+    
+  <script>
 import axios from "axios";
 import { API_BASE_URL } from "@/libs/config";
 
@@ -80,11 +103,18 @@ export default {
     return {
       email: "",
       password: "",
+      name: "",
+      confirmPassword: "",
       valid: false,
       loading: false,
       error: "",
       errorSnackbar: false,
-      snackbarTimeout: 3000,
+      snackbarTimeout: 5000,
+      nameRules: [(v) => !!v || "Name is required"],
+      confirmPasswordRules: [
+        (v) => !!v || "Password Confirmation is required",
+        (v) => v === this.password || "Password Doesn't Match!",
+      ],
       emailRules: [
         (v) => !!v || "Email is required",
         (v) => {
@@ -93,7 +123,14 @@ export default {
           return pattern.test(v) || "Invalid e-mail.";
         },
       ],
-      passwordRules: [(v) => !!v || "Password is required"],
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) =>
+          /.+(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).+/.test(
+            v
+          ) ||
+          "Password must contain at least 1 [A-Z], at least 1 [a-z]), at least 1 [0-9]) and a special character",
+      ],
     };
   },
   methods: {
@@ -104,13 +141,13 @@ export default {
 
       // Perform login using Axios with API_BASE_URL
       axios
-        .post(API_BASE_URL + "login", {
+        .post(API_BASE_URL + "register", {
           email: this.email,
+          name: this.name,
           password: this.password,
+          password_confirmation: this.confirmPassword,
         })
         .then((response) => {
-          // Handle successful login response
-          console.log("Login successful:", response);
           // Save token and user object to local storage
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -118,7 +155,9 @@ export default {
         })
         .catch((error) => {
           // Display error message to user
-          this.error = error.response.data.message;
+          if(error.response.data.errors.email) this.error = error.response.data.errors.email[0];
+          else this.error = error.response.data.message;
+          
           this.errorSnackbar = true;
           // Remove any prestored data if there is
           localStorage.removeItem("token");
@@ -130,9 +169,6 @@ export default {
           this.$router.push("/");
         });
     },
-    signup(){
-      this.$router.push('/signup')
-    }
   },
 };
 </script>

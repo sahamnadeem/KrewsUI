@@ -9,6 +9,7 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView,
+    beforeEnter: [guestOnly],
   },
   {
     path: '/',
@@ -35,6 +36,11 @@ function authCheck(to) {
   if (isAuthenticated() === false) return { path: '/login' } 
   else return true
 }
+function guestOnly(to, from) {
+  if (isAuthenticated() === false) return true
+  else return { path: from.path } 
+}
+
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

@@ -11,6 +11,7 @@ export default createStore({
     loading:false,
     toke:null,
     user:null,
+    next_page:1,
   },
   getters: {
     getPosts(state) {
@@ -35,6 +36,8 @@ export default createStore({
     },
     SET_RESPONSE(state, payload) {
       state.currentPosts = payload
+      if(payload.next_page_url) state.next_page = state.next_page+1
+      else state.next_page = null
     },
     SET_ERROR(state, payload) {
       state.error = payload
@@ -77,10 +80,10 @@ export default createStore({
       context.commit('DELETE_POST', payload)
     },
     getMorePosts({commit, state}) {
-      if(state.currentPosts.next_page_url){
+      if(state.next_page){
         commit('SET_LOADING',true)
         axios
-        .get(state.currentPosts.next_page_url, getHeaders())
+        .get(API_BASE_URL + "post?page="+ state.next_page, getHeaders())
         .then((response) => {
           // Handle successful login response
           commit('SET_RESPONSE', response.data)

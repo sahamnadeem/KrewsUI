@@ -28,7 +28,7 @@ import CreatePost from "./CreatePost.vue";
 import Post from "./Post.vue";
 
 export default {
-  name: "HelloWorld",
+  name: "PostCollection",
   props: {
     msg: String,
   },

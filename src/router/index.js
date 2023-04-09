@@ -55,7 +55,13 @@ function guestOnly(to, from) {
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    return {
+      el: to.hash,
+      behavior: 'smooth',
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {

@@ -6,7 +6,7 @@
 
         <v-col cols="12" sm="7">
           <create-post />
-          <post v-for="post in posts" :key="post.id" v-bind="post.id" :content="post"></post>
+          <post v-for="post in posts" :key="post.id" v-bind="post.id" :content="post" :id="'post-'+post.id"></post>
           <div class="d-flex justify-center">
             <v-progress-circular
               v-if="loading"

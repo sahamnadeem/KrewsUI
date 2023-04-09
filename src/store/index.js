@@ -12,6 +12,8 @@ export default createStore({
     toke:null,
     user:null,
     next_page:1,
+    is_update:false,
+    editPost:null
   },
   getters: {
     getPosts(state) {
@@ -28,11 +30,20 @@ export default createStore({
     },
     getUser(state){
       return state.user
+    },
+    getIsUpdate(state){
+      return state.is_update
+    },
+    getEditPost(state){
+      return state.editPost
     }
   },
   mutations: {
     SET_POSTS(state, payload) {
       state.posts.push(...payload)
+    },
+    SET_POSTS_TOP(state, payload){
+      state.posts = payload.concat(state.posts)
     },
     SET_RESPONSE(state, payload) {
       state.currentPosts = payload
@@ -55,6 +66,14 @@ export default createStore({
     STORE_AUTH(state, payload){
       state.token = payload.token
       state.user = payload.user
+    },
+    EDIT_POST(state, payload){
+      state.is_update = true
+      state.editPost = payload
+    },
+    RESET_EDIT(state){
+      state.is_update = false
+      state.editPost = null
     }
   },
   actions: {
@@ -101,6 +120,15 @@ export default createStore({
     },
     store_auth(context, payload){
       context.commit('STORE_AUTH',payload);
+    },
+    addPost(context, payload){
+      context.commit('SET_POSTS_TOP',[payload.post])
+    },
+    editPost(context, payload){
+      context.commit('EDIT_POST',payload)
+    },
+    clearUpdate(context){
+      context.commit('RESET_EDIT')
     }
   },
   modules: {

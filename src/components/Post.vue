@@ -9,7 +9,7 @@
         ></v-icon>
       </template>
       <v-list theme="light">
-        <v-list-item value="edit" v-if="content.user_id === user.id">
+        <v-list-item value="edit" v-if="content.user_id === user.id" @click="edit(content)">
           <v-list-item-title
             ><v-icon icon="mdi-pencil" size="small" color="grey"></v-icon>
             Edit</v-list-item-title
@@ -51,14 +51,14 @@
           :src="content.images[0].media_url"
           cover
         >
-            <template v-slot:placeholder>
-                <div class="d-flex align-center justify-center fill-height">
-                    <v-progress-circular
-                    color="grey-lighten-4"
-                    indeterminate
-                    ></v-progress-circular>
-                </div>
-            </template>
+          <template v-slot:placeholder>
+            <div class="d-flex align-center justify-center fill-height">
+              <v-progress-circular
+                color="grey-lighten-4"
+                indeterminate
+              ></v-progress-circular>
+            </div>
+          </template>
         </v-img>
         <div class="overlay" v-if="content.images.length > 1"></div>
         <div class="overlay-number" v-if="content.images.length > 1">
@@ -118,13 +118,17 @@ export default {
         })
         .catch((error) => {
           // Display error message to user
-            if(error.response.data) this.error = error.response.message;
+          if (error.response.data) this.error = error.response.message;
         })
         .finally(() => {
           // Reset loading state
           this.loading = false;
         });
     },
+    edit:function(post){
+      window.scrollTo(0,0);
+      this.$store.dispatch("editPost", post);
+    }
   },
   computed: {
     user() {
@@ -139,22 +143,12 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .multi-img {
   position: relative;
   width: 150px;
   height: 150px;
   overflow: hidden;
-  .overlay-number {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    font-size: 2rem;
-    align-items: center;
-  }
 }
 .overlay {
   position: absolute;
@@ -168,7 +162,17 @@ export default {
   font-size: 2rem;
   align-items: center;
 }
-.v-card .v-card-text{
+.v-card .v-card-text {
   line-height: 1.5rem !important;
+}
+.overlay-number {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  align-items: center;
 }
 </style>

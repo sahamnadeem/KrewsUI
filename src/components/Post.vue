@@ -41,7 +41,7 @@
       <br />
       <div
         class="multi-img"
-        @click="index = 0"
+        @click="openImage"
         v-if="content.images.length > 0"
       >
         <v-img
@@ -128,6 +128,9 @@ export default {
     edit:function(post){
       window.scrollTo(0,0);
       this.$store.dispatch("editPost", post);
+    },
+    openImage(){
+      this.$store.dispatch("toggleImage", this.content);
     }
   },
   computed: {

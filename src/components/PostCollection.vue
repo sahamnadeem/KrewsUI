@@ -20,12 +20,14 @@
         <v-col cols="12" sm="2"> </v-col>
       </v-row>
     </v-container>
+    <ImageViewer/>
   </v-main>
 </template>
 
 <script>
 import CreatePost from "./CreatePost.vue";
 import Post from "./Post.vue";
+import ImageViewer from "./ImageViewer.vue";
 
 export default {
   name: "PostCollection",
@@ -34,7 +36,8 @@ export default {
   },
   components: {
     CreatePost,
-    Post
+    Post,
+    ImageViewer
   },
   data() {
     return {

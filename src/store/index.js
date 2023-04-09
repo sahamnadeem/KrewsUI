@@ -13,7 +13,10 @@ export default createStore({
     user:null,
     next_page:1,
     is_update:false,
-    editPost:null
+    editPost:null,
+    popup:false,
+    imageSrc:null,
+    imageList:[]
   },
   getters: {
     getPosts(state) {
@@ -36,6 +39,15 @@ export default createStore({
     },
     getEditPost(state){
       return state.editPost
+    },
+    getPopup(state){
+      return state.popup
+    },
+    getImageSrc(state){
+      return state.imageSrc
+    },
+    getImageList(state){
+      return state.imageList
     }
   },
   mutations: {
@@ -74,6 +86,16 @@ export default createStore({
     RESET_EDIT(state){
       state.is_update = false
       state.editPost = null
+    },
+    TOGGLE_IMAGE(state, payload){
+      state.popup = !state.popup
+      if(payload){
+        state.imageSrc = payload.images[0]
+        state.imageList = payload.images
+      }
+    },
+    CHANGE_IMAGE(state, payload){
+      state.imageSrc = payload
     }
   },
   actions: {
@@ -129,6 +151,12 @@ export default createStore({
     },
     clearUpdate(context){
       context.commit('RESET_EDIT')
+    },
+    toggleImage(context, payload){
+      context.commit('TOGGLE_IMAGE', payload)
+    },
+    changeImage(context, payload){
+      context.commit('CHANGE_IMAGE', payload)
     }
   },
   modules: {

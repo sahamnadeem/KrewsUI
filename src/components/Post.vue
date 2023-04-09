@@ -1,6 +1,6 @@
 <template>
   <v-card class="ma-auto mb-5" color="#00b0be" theme="dark" max-width="600">
-    <v-menu absolute v-if="content.user_id === user.id || user.role === 1">
+    <v-menu absolute v-if="content.user_id === user.id || user.is_admin">
       <template v-slot:activator="{ props }">
         <v-icon
           class="float-right ma-3"
@@ -17,7 +17,7 @@
         </v-list-item>
         <v-list-item
           value="delete"
-          v-if="content.user_id === user.id || user.role === 1"
+          v-if="content.user_id === user.id || user.is_admin"
         >
           <v-list-item-title @click="deletePost"
             ><v-icon icon="mdi-delete" size="small" color="grey"></v-icon>
@@ -95,7 +95,7 @@
 
 <script>
 import axios from "axios";
-import { API_BASE_URL, HEADERS } from "@/libs/config";
+import { API_BASE_URL, getHeaders } from "@/libs/config";
 import { load } from "webfontloader";
 
 export default {
@@ -112,18 +112,13 @@ export default {
     deletePost() {
       this.loading = true;
       axios
-        .delete(API_BASE_URL + "post/" + this.content.id, HEADERS)
+        .delete(API_BASE_URL + "post/" + this.content.id, getHeaders())
         .then((response) => {
-          console.log(response);
           this.$store.dispatch("deletePost", this.content);
         })
         .catch((error) => {
           // Display error message to user
-          //   if(error.response.data && error.response.data.errors && error.response.data.errors) this.error = error.response.data.errors.email[0];
-          //   else this.error = error.response.message;
-
-          //   this.errorSnackbar = true;
-          console.log(error);
+            if(error.response.data) this.error = error.response.message;
         })
         .finally(() => {
           // Reset loading state
@@ -137,7 +132,6 @@ export default {
     },
     images() {
       return this.content.images.map((image) => {
-        console.log(image.media_url);
         return image.media_url;
       });
     },
@@ -173,5 +167,8 @@ export default {
   justify-content: center;
   font-size: 2rem;
   align-items: center;
+}
+.v-card .v-card-text{
+  line-height: 1.5rem !important;
 }
 </style>

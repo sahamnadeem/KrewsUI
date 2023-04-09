@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from "axios";
-import { API_BASE_URL, HEADERS } from "@/libs/config";
+import { API_BASE_URL, getHeaders } from "@/libs/config";
 
 export default createStore({
   state: {
@@ -8,7 +8,9 @@ export default createStore({
     posts: [],
     error: '',
     errorSnackbar: false,
-    loading:false
+    loading:false,
+    toke:null,
+    user:null,
   },
   getters: {
     getPosts(state) {
@@ -19,6 +21,12 @@ export default createStore({
     },
     getLoadingState(state){
       return state.loading
+    },
+    getToken(state){
+      return state.token
+    },
+    getUser(state){
+      return state.user
     }
   },
   mutations: {
@@ -40,13 +48,17 @@ export default createStore({
     DELETE_POST(state, payload) {
       const index = state.posts.indexOf(state.posts.find(obj => obj.id === payload.id))
       state.posts.splice(index, 1)
+    },
+    STORE_AUTH(state, payload){
+      state.token = payload.token
+      state.user = payload.user
     }
   },
   actions: {
     getPosts(context) {
       context.commit('SET_LOADING',true)
       axios
-        .get(API_BASE_URL + "post", HEADERS)
+        .get(API_BASE_URL + "post", getHeaders())
         .then((response) => {
           // Handle successful login response
           context.commit('SET_RESPONSE', response.data)
@@ -68,7 +80,7 @@ export default createStore({
       if(state.currentPosts.next_page_url){
         commit('SET_LOADING',true)
         axios
-        .get(state.currentPosts.next_page_url, HEADERS)
+        .get(state.currentPosts.next_page_url, getHeaders())
         .then((response) => {
           // Handle successful login response
           commit('SET_RESPONSE', response.data)
@@ -83,6 +95,9 @@ export default createStore({
           commit('SET_LOADING',false)
         })
       }
+    },
+    store_auth(context, payload){
+      context.commit('STORE_AUTH',payload);
     }
   },
   modules: {

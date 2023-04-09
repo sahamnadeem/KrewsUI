@@ -1,5 +1,12 @@
 <template>
   <v-app-bar class="px-3" color="white" flat density="comfortable">
+    <v-img
+      class="mx-2"
+      src="@/assets/logo.png"
+      max-height="100"
+      max-width="100"
+      contain
+    ></v-img>
     <v-spacer></v-spacer>
 
     <v-tabs centered color="grey-darken-2">
@@ -46,20 +53,25 @@ export default {
   props: {
     links: Array,
   },
-  computed:{
-    name:() => {
-      return JSON.parse(localStorage.getItem('user')).name
+  computed: {
+    name: () => {
+      return JSON.parse(localStorage.getItem("user")).name;
     },
-    email:() => {
-      return JSON.parse(localStorage.getItem('user')).email
+    email: () => {
+      return JSON.parse(localStorage.getItem("user")).email;
     },
   },
-  methods:{
-    logout(){
-      localStorage.removeItem("token")
-      localStorage.removeItem("user")
-      this.$router.push('/login')
-    }
-  }
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
+<style scoped>
+.login-logo {
+  width: 100px !important;
+}
+</style>

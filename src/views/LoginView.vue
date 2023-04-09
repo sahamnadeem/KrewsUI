@@ -4,7 +4,7 @@
       <v-col cols="12" sm="10" md="8" lg="6">
         <v-card class="login-card">
           <v-img
-            src="@/assets/twitter-logo.png"
+            src="@/assets/logo.png"
             class="login-logo"
             alt="Twitter Logo"
           ></v-img>
@@ -112,7 +112,7 @@ export default {
           // Save token and user object to local storage
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
-          // Redirect to dashboard or perform other actions as needed
+          this.$store.dispatch('store_auth', response.data)
           this.$router.push("/");
         })
         .catch((error) => {

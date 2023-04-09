@@ -44,10 +44,8 @@ export default {
       return this.$store.getters.getLoadingState
     }
   },
-  beforeCreate() {
-    this.$store.dispatch("getPosts");
-  },
   mounted() {
+    this.$store.dispatch("getPosts");
     this.onScroll();
   },
 };

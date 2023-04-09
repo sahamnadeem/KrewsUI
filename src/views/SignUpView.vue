@@ -4,7 +4,7 @@
       <v-col cols="12" sm="10" md="8" lg="6">
         <v-card class="login-card">
           <v-img
-            src="@/assets/twitter-logo.png"
+            src="@/assets/logo.png"
             class="login-logo"
             alt="Twitter Logo"
           ></v-img>
@@ -172,3 +172,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.login-logo{
+  width: 200px;
+  margin: auto;
+}
+</style>

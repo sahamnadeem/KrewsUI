@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from "../views/LoginView.vue"
 import SignUpView from "../views/SignUpView.vue"
 import Dashboard from "../views/Dashboard.vue"
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
   {
@@ -41,7 +42,8 @@ const routes = [
         meta: { title: 'Profile - KrewsUI' },
       }
     ],
-  }
+  }, 
+  { path: "/:catchAll(.*)", name: "NotFound", component: NotFound, meta: { title: 'Not Found' }, },
 ]
 
 function authCheck(to) {

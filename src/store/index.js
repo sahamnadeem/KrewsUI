@@ -16,7 +16,8 @@ export default createStore({
     editPost:null,
     popup:false,
     imageSrc:null,
-    imageList:[]
+    imageList:[],
+    snackError:null
   },
   getters: {
     getPosts(state) {
@@ -48,6 +49,9 @@ export default createStore({
     },
     getImageList(state){
       return state.imageList
+    },
+    getError(state){
+      return state.snackError
     }
   },
   mutations: {
@@ -96,6 +100,12 @@ export default createStore({
     },
     CHANGE_IMAGE(state, payload){
       state.imageSrc = payload
+    },
+    MAKE_ERROR(state, payload){
+      state.snackError = payload
+    },
+    REMOVE_ERROR(state){
+      state.snackError = null
     }
   },
   actions: {
@@ -157,6 +167,12 @@ export default createStore({
     },
     changeImage(context, payload){
       context.commit('CHANGE_IMAGE', payload)
+    },
+    setError(context, payload){
+      context.commit('MAKE_ERROR', payload)
+    },
+    removeError(context){
+      context.commit('REMOVE_ERROR')
     }
   },
   modules: {

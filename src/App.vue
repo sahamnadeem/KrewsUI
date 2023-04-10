@@ -30,4 +30,7 @@ nav {
 html {
   scroll-behavior: smooth;
 }
+.bordered{
+  border:1px solid rgb(157, 157, 157);
+}
 </style>

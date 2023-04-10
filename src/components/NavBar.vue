@@ -19,22 +19,22 @@
     <v-menu min-width="200px" rounded>
       <template v-slot:activator="{ props }">
         <v-btn icon v-bind="props">
-          <v-avatar>
-            <v-img
-              src="https://cdn.vuetifyjs.com/images/john.jpg"
-              alt="John"
-            ></v-img>
+          <v-avatar color="white" elevation="2" class="bordered">
+            <span class="text-h5">{{
+              name.split(" ").shift().charAt(0) +
+              name.split(" ").pop().charAt(0)
+            }}</span>
           </v-avatar>
         </v-btn>
       </template>
       <v-card>
         <v-card-text>
           <div class="mx-auto text-center">
-            <v-avatar>
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/john.jpg"
-                alt="John"
-              ></v-img>
+            <v-avatar color="white" elevation="2" class="bordered">
+              <span class="text-h5">{{
+                name.split(" ").shift().charAt(0) +
+                name.split(" ").pop().charAt(0)
+              }}</span>
             </v-avatar>
             <h3>{{ name }}</h3>
             <p class="text-caption mt-1">{{ email }}</p>

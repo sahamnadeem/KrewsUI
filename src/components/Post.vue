@@ -69,7 +69,7 @@
     <v-card-actions>
       <v-list-item class="w-100">
         <template v-slot:prepend>
-          <v-avatar color="white">
+          <v-avatar color="white" class="bordered">
             <span class="text-h5">{{
               content.user.name.split(" ").shift().charAt(0) +
               content.user.name.split(" ").pop().charAt(0)
@@ -118,7 +118,12 @@ export default {
         })
         .catch((error) => {
           // Display error message to user
-          if (error.response.data) this.error = error.response.message;
+          this.$store.dispatch("setError", {
+            state: true,
+            timeout: 5000,
+            title: "Can not update post",
+            message: error.response.data.message,
+          });
         })
         .finally(() => {
           // Reset loading state

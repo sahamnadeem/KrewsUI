@@ -2,6 +2,18 @@
   <v-app id="inspire">
     <nav-bar :links="links"></nav-bar>
     <router-view />
+    <v-snackbar
+      v-if="error"
+      v-model="error.state"
+      :timeout="error.timeout"
+      color="error"
+      location="top right"
+    >
+      <div class="text-subtitle-1 pb-2">
+        <b>{{ error.title }}</b>
+      </div>
+      <p>{{ error.message }}</p>
+    </v-snackbar>
   </v-app>
 </template>
   
@@ -18,11 +30,7 @@ export default {
         {
           name: "Dashboard",
           link: "/",
-        },
-        {
-          name: "Profile",
-          link: "/profile",
-        },
+        }
       ],
     };
   },
@@ -30,7 +38,10 @@ export default {
     onScroll() {
       const that = this;
       window.onscroll = function (ev) {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight && that.loading === false) {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+          that.loading === false
+        ) {
           that.loadMorePosts();
         }
       };
@@ -40,8 +51,16 @@ export default {
     },
   },
   computed: {
-    loading(){
-      return this.$store.getters.getLoadingState
+    loading() {
+      return this.$store.getters.getLoadingState;
+    },
+    error:{
+      get(){
+        return this.$store.getters.getError
+      },
+      set(){
+        this.$store.dispatch('removeError')
+      }
     }
   },
   mounted() {

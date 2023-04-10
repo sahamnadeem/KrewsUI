@@ -5,7 +5,6 @@
     :title="postTitle"
     subtitle="Create someting that tells about you!"
     elevation="2"
-    append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
   >
     <v-text-field v-model="title" label="Title"></v-text-field>
     <v-textarea
@@ -42,6 +41,10 @@
         ></v-file-input>
       </div>
     </div>
+    <br />
+    <v-row class="ma-1 justify-start">
+      <span v-if="error" class="error">{{ error }}</span>
+    </v-row>
 
     <v-row class="ma-3">
       <v-spacer></v-spacer>
@@ -103,6 +106,7 @@ export default {
       title: "",
       urls: [],
       files: [],
+      error: "",
       disUploader: true,
       form: new FormData(),
       loading: false,
@@ -123,9 +127,23 @@ export default {
       this.urls.splice(index, 1);
     },
     onFileChange(e) {
-      debugger;
+      let that = this;
+      setTimeout(() => {
+        that.error = "";
+      }, 10000);
+
       for (let i = 0; i < Object.keys(e.target.files).length; i++) {
-        this.urls.push(URL.createObjectURL(e.target.files[i]));
+        if (this.urls.length < 5) {
+          if (e.target.files[i].size <= 2000000) {
+            this.urls.push(URL.createObjectURL(e.target.files[i]));
+          } else {
+            this.error = "Photo size should be less than 2MB!";
+            return;
+          }
+        } else {
+          this.error = "Can not upload moer then 5 items!";
+          return;
+        }
       }
     },
     postNow: function () {
@@ -148,19 +166,24 @@ export default {
         axios
           .post(API_BASE_URL + "post", form, getHeaders())
           .then((response) => {
-            this.$store.dispatch("addPost", response.data)
-            .then(()=>{
-                document.getElementById("post-"+response.data.post.id).scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "center"
-              });
-            })
+            this.$store.dispatch("addPost", response.data).then(() => {
+              document
+                .getElementById("post-" + response.data.post.id)
+                .scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                  inline: "center",
+                });
+            });
           })
           .catch((error) => {
             // Display error message to user
-            this.error = error.response.data.message;
-            this.errorSnackbar = true;
+            this.$store.dispatch("setError", {
+              state: true,
+              timeout: 5000,
+              title: "Can not create post",
+              message: error.response.data.message,
+            });
           })
           .finally(() => {
             // Reset loading state
@@ -198,31 +221,36 @@ export default {
     },
     update: function () {
       this.loading = true;
-      let current_id = this.editPost.id
+      let current_id = this.editPost.id;
       axios
         .put(
-          API_BASE_URL + "post/"+current_id,
+          API_BASE_URL + "post/" + current_id,
           { title: this.title, content: this.content },
           getHeaders()
         )
         .then((response) => {
-          console.log(response)
-          this.$store.dispatch("deletePost", this.editPost)
-          .then(()=>{
-            this.$store.dispatch("addPost", response.data);
-          })
-          .then(()=>{
-            document.getElementById("post-"+current_id).scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-              inline: "center"
+          console.log(response);
+          this.$store
+            .dispatch("deletePost", this.editPost)
+            .then(() => {
+              this.$store.dispatch("addPost", response.data);
+            })
+            .then(() => {
+              document.getElementById("post-" + current_id).scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "center",
+              });
             });
-          })
         })
         .catch((error) => {
           // Display error message to user
-          this.error = error.response.data.message;
-          this.errorSnackbar = true;
+          this.$store.dispatch("setError", {
+            state: true,
+            timeout: 5000,
+            title: "Can not update post",
+            message: error.response.data.message,
+          });
         })
         .finally(() => {
           // Reset loading state
@@ -294,5 +322,13 @@ export default {
 }
 .uploader {
   border: 1px dotted grey;
+}
+.error {
+  color: rgb(149, 0, 0);
+  font-size: 0.9rem;
+  font-weight: bold;
+  background: rgba(255, 0, 0, 0.296);
+  border-radius: 5px;
+  padding: 10px;
 }
 </style>

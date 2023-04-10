@@ -25,6 +25,7 @@ export default {
     },
     methods:{
         goHome(){
+            //Route user to home page
             this.$router.push("/")
         }
     }

@@ -109,10 +109,11 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          // Save token and user object to local storage
+          // Save token and user object to local storage and state store
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
           this.$store.dispatch('store_auth', response.data)
+          //Route user to home page
           this.$router.push("/");
         })
         .catch((error) => {
@@ -129,6 +130,7 @@ export default {
         });
     },
     signup(){
+      //Route user to Signup page
       this.$router.push('/signup')
     }
   },

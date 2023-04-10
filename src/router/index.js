@@ -43,7 +43,7 @@ const routes = [
       }
     ],
   }, 
-  { path: "/:catchAll(.*)", name: "NotFound", component: NotFound, meta: { title: 'Not Found' }, },
+  { path: "/:catchAll(.*)", name: "NotFound", component: NotFound, meta: { title: 'Not Found' }, } // checking for 404 erroes
 ]
 
 function authCheck(to) {

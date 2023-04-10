@@ -37,16 +37,19 @@ export default {
   methods: {
     onScroll() {
       const that = this;
+      // Check if the page hit the bottom
       window.onscroll = function (ev) {
         if (
           window.innerHeight + window.scrollY >= document.body.offsetHeight &&
           that.loading === false
         ) {
+          // Load more posts if its already not loading
           that.loadMorePosts();
         }
       };
     },
     loadMorePosts() {
+      // Call store action to get posts
       this.$store.dispatch("getMorePosts");
     },
   },
@@ -55,6 +58,7 @@ export default {
       return this.$store.getters.getLoadingState;
     },
     error:{
+      // Computed property to get and set values directly in store in case of error snack bar displays and hides
       get(){
         return this.$store.getters.getError
       },
@@ -64,6 +68,7 @@ export default {
     }
   },
   mounted() {
+    // Get posts on page mount
     this.$store.dispatch("getPosts");
     this.onScroll();
   },

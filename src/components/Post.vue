@@ -110,8 +110,9 @@ export default {
   },
   methods: {
     deletePost() {
-      this.loading = true;
-      axios
+      if (confirm("Areyyou sure! you want to delete this post?") == true) {
+        this.loading = true;
+        axios
         .delete(API_BASE_URL + "post/" + this.content.id, getHeaders())
         .then((response) => {
           this.$store.dispatch("deletePost", this.content);
@@ -129,6 +130,7 @@ export default {
           // Reset loading state
           this.loading = false;
         });
+      }
     },
     edit:function(post){
       window.scrollTo(0,0);

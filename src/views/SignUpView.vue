@@ -110,7 +110,10 @@ export default {
       error: "",
       errorSnackbar: false,
       snackbarTimeout: 5000,
-      nameRules: [(v) => !!v || "Name is required"],
+      nameRules: [
+        (v) => !!v || "Name is required",
+        (v) => (v && v.length <= 50) || "Name must be less than 50 characters",
+      ],
       confirmPasswordRules: [
         (v) => !!v || "Password Confirmation is required",
         (v) => v === this.password || "Password Doesn't Match!",
@@ -122,6 +125,7 @@ export default {
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(v) || "Invalid e-mail.";
         },
+        (v) => (v && v.length <= 50) || "Email must be less than 50 characters",
       ],
       passwordRules: [
         (v) => !!v || "Password is required",
@@ -131,7 +135,7 @@ export default {
           ) ||
           "Password must contain at least 1 [A-Z], at least 1 [a-z]), at least 1 [0-9]) and a special characters [!$#%?.@&:;~%$]",
         (v) => ( v && v.length >= 8 ) || "Password must have atleast 8 characters",
-        (v) => ( v && v.length <= 64 ) || "Password exceeds maximum allowed characters",
+        (v) => ( v && v.length <= 64 ) || "Password must be less than 64 characters",
       ],
     };
   },

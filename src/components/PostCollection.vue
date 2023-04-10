@@ -16,6 +16,7 @@
         color="#00b0be"
       ></v-progress-circular>
     </div>
+    <br/>
   </div>
 </template>
 

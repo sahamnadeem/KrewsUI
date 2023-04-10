@@ -6,8 +6,10 @@
     subtitle="Create someting that tells about you!"
     elevation="2"
   >
-    <v-text-field v-model="title" label="Title"></v-text-field>
+    <v-text-field v-model="title" label="Title" :maxlength="100" counter></v-text-field>
     <v-textarea
+      :maxlength="500"
+      counter
       v-model="content"
       placeholder="Write something here..."
     ></v-textarea>
@@ -26,20 +28,25 @@
     </div>
 
     <div class="position-relative image-block uploader" v-if="disUploader">
-      <div class="overlay-number plus-icon" @click="$refs.file.click()">
-        <v-icon icon="mdi-plus"></v-icon>
-        <v-file-input
-          @change="onFileChange"
-          ref="file"
-          :rules="rules"
-          style="display: none"
-          accept="image/png, image/jpeg, image/bmp"
-          placeholder="Pick an image"
-          multiple
-          prepend-icon="mdi-camera"
-          :show-size="1000"
-        ></v-file-input>
-      </div>
+      <v-tooltip text="Add Attachment(s)" location="top">
+        <template v-slot:activator="{ props }">
+          <div class="overlay-number plus-icon" v-bind="props" @click="$refs.file.click()">
+            <v-icon icon="mdi-plus"></v-icon>
+            <v-file-input
+              @change="onFileChange"
+              ref="file"
+              :rules="rules"
+              style="display: none"
+              accept="image/png, image/jpeg, image/bmp"
+              placeholder="Pick an image"
+              multiple
+              prepend-icon="mdi-camera"
+              :show-size="1000"
+            ></v-file-input>
+          </div>
+        </template>
+      </v-tooltip>
+      
     </div>
     <br />
     <v-row class="ma-1 justify-start">

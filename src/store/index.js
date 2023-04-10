@@ -106,6 +106,22 @@ export default createStore({
     },
     REMOVE_ERROR(state){
       state.snackError = null
+    },
+    CLEAR_STORE(state){
+      state.currentPosts =  null
+      state.posts= []
+      state.error = ''
+      state.errorSnackbar = false
+      state.loading = false
+      state.token = null
+      state.user = null
+      state.next_page = 1
+      state.is_update = false
+      state.editPost = null
+      state.popup = false
+      state.imageSrc = null
+      state.imageList = []
+      state.snackError = null
     }
   },
   actions: {
@@ -173,6 +189,9 @@ export default createStore({
     },
     removeError(context){
       context.commit('REMOVE_ERROR')
+    },
+    clearStore(context){
+      context.commit('CLEAR_STORE')
     }
   },
   modules: {

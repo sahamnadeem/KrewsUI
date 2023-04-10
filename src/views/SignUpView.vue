@@ -126,10 +126,12 @@ export default {
       passwordRules: [
         (v) => !!v || "Password is required",
         (v) =>
-          /.+(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!@#$&()\\-`.+,/\"]).+/.test(
+          /.+(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%?.@&:;~%$]).+/.test(
             v
           ) ||
-          "Password must be minimum 8 characters and contain at least 1 [A-Z], at least 1 [a-z]), at least 1 [0-9]) and a special characters [!@#$&()\\-`.+,/\"]",
+          "Password must contain at least 1 [A-Z], at least 1 [a-z]), at least 1 [0-9]) and a special characters [!$#%?.@&:;~%$]",
+        (v) => ( v && v.length >= 8 ) || "Password must have atleast 8 characters",
+        (v) => ( v && v.length <= 64 ) || "Password exceeds maximum allowed characters",
       ],
     };
   },
